@@ -1,0 +1,15 @@
+#override .valid-feedback {
+  color: var(--bs-secondary-color) !important;
+}
+
+#override .form-check {
+  padding-left: 0 !important;
+}
+
+p {
+  margin-bottom: 0.5rem !important;
+}
+
+.subtitle {
+  margin-bottom: 0 !important;
+}

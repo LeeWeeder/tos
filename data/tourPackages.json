@@ -1,0 +1,328 @@
+[
+  {
+    "title": "Explore the Wonders of Rome and Venice",
+    "destination": "Rome and Venice, Italy",
+    "duration": 7,
+    "members": {
+      "from": 2,
+      "to": 10
+    },
+    "commodity": {
+      "accommodation": {
+        "star": 4,
+        "text": "Four Star Hotel"
+      },
+      "food": "dine",
+      "transportation": "free"
+    },
+    "price": 150000,
+    "itinerary": [
+      {
+        "day": "Day 1",
+        "activities": [
+          "1. Arrive in Rome and check in to your hotel",
+          "2. Enjoy a welcome dinner at a local restaurant"
+        ]
+      },
+      {
+        "day": "Day 2",
+        "activities": [
+          "1. Visit the Colosseum, the Roman Forum, and the Palatine Hill",
+          "2. Explore the Vatican Museums, the Sistine Chapel, and St. Peter's Basilica"
+        ]
+      },
+      {
+        "day": "Day 3",
+        "activities": [
+          "1. Take a day trip to Pompeii and see the ancient ruins",
+          "2. Return to Rome and have some free time to shop or relax"
+        ]
+      },
+      {
+        "day": "Day 4",
+        "activities": [
+          "1. Travel by train to Venice and check in to your hotel",
+          "2. Enjoy a gondola ride along the canals and see the Rialto Bridge"
+        ]
+      },
+      {
+        "day": "Day 5",
+        "activities": [
+          "1. Visit the Doge's Palace, the Bridge of Sighs, and the Basilica of San Marco",
+          "2. Take a boat trip to the islands of Murano, Burano, and Torcello"
+        ]
+      },
+      {
+        "day": "Day 6",
+        "activities": [
+          "1. Have a free day to explore Venice at your own pace",
+          "2. Join a farewell dinner at a traditional Venetian restaurant"
+        ]
+      },
+      {
+        "day": "Day 7",
+        "activities": [
+          "1. Check out from your hotel and depart for your flight home"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Discover the Beauty of Bali and Lombok",
+    "destination": "Bali and Lombok, Indonesia",
+    "duration": 6,
+    "members": {
+      "from": 4,
+      "to": 4
+    },
+    "commodity": {
+      "accommodation": {
+        "star": 3,
+        "text": "Three Star Hotel"
+      },
+      "food": "packed",
+      "transportation": "separate"
+    },
+    "price": 50000,
+    "itinerary": [
+      {
+        "day": "Day 1",
+        "activities": [
+          "1. Arrive in Bali and check in to your hotel",
+          "2. Relax at the beach or enjoy the hotel facilities"
+        ]
+      },
+      {
+        "day": "Day 2",
+        "activities": [
+          "1. Visit the Tanah Lot Temple, the Ubud Monkey Forest, and the Tegalalang Rice Terrace",
+          "2. Watch a traditional Balinese dance performance"
+        ]
+      },
+      {
+        "day": "Day 3",
+        "activities": [
+          "1. Travel by ferry to Lombok and check in to your hotel",
+          "2. Visit the Senggigi Beach and the Pura Batu Bolong Temple"
+        ]
+      },
+      {
+        "day": "Day 4",
+        "activities": [
+          "1. Take a boat trip to the Gili Islands and enjoy snorkeling, swimming, and sunbathing",
+          "2. See the sunset and the nightlife on Gili Trawangan"
+        ]
+      },
+      {
+        "day": "Day 5",
+        "activities": [
+          "1. Return to Lombok and hike to the Sendang Gile and Tiu Kelep Waterfalls",
+          "2. Explore the Senaru Traditional Village and learn about the local culture"
+        ]
+      },
+      {
+        "day": "Day 6",
+        "activities": [
+          "1. Check out from your hotel and depart for your flight back to Bali"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Experience the Magic of Paris and Disneyland",
+    "destination": "Paris, France",
+    "duration": 5,
+    "members": {
+      "from": 1,
+      "to": 20
+    },
+    "commodity": {
+      "accommodation": {
+        "star": 5,
+        "text": "Five Star Hotel"
+      },
+      "food": "dine",
+      "transportation": "free"
+    },
+    "price": 200000,
+    "itinerary": [
+      {
+        "day": "Day 1",
+        "activities": [
+          "1. Arrive in Paris and check in to your hotel",
+          "2. Enjoy a welcome dinner at a gourmet restaurant"
+        ]
+      },
+      {
+        "day": "Day 2",
+        "activities": [
+          "1. Visit the Eiffel Tower, the Louvre Museum, and the Notre Dame Cathedral",
+          "2. Cruise along the Seine River and see the city lights"
+        ]
+      },
+      {
+        "day": "Day 3",
+        "activities": [
+          "1. Travel by train to Disneyland Paris and have a full day of fun and adventure",
+          "2. Meet your favorite Disney characters, watch the parades and shows, and ride the attractions"
+        ]
+      },
+      {
+        "day": "Day 4",
+        "activities": [
+          "1. Return to Paris and visit the Arc de Triomphe, the Champs-Élysées, and the Montmartre",
+          "2. See the Moulin Rouge and the Sacré-Cœur Basilica"
+        ]
+      },
+      {
+        "day": "Day 5",
+        "activities": [
+          "1. Check out from your hotel and depart for your flight home"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Explore the Culture and Nature of Japan",
+    "destination": "Tokyo, Kyoto, and Osaka, Japan",
+    "duration": 8,
+    "members": {
+      "from": 2,
+      "to": 8
+    },
+    "commodity": {
+      "accommodation": {
+        "star": 4,
+        "text": "Four Star Hotel"
+      },
+      "food": "dine",
+      "transportation": "free"
+    },
+    "price": 180000,
+    "itinerary": [
+      {
+        "day": "Day 1",
+        "activities": [
+          "1. Arrive in Tokyo and check in to your hotel",
+          "2. Enjoy a welcome dinner at a sushi restaurant"
+        ]
+      },
+      {
+        "day": "Day 2",
+        "activities": [
+          "1. Visit the Tokyo Skytree, the Imperial Palace, and the Asakusa Temple",
+          "2. Experience the Shibuya Crossing, the Harajuku Street, and the Akihabara District"
+        ]
+      },
+      {
+        "day": "Day 3",
+        "activities": [
+          "1. Travel by bullet train to Kyoto and check in to your hotel",
+          "2. Visit the Kinkaku-ji Temple, the Nijo Castle, and the Gion District"
+        ]
+      },
+      {
+        "day": "Day 4",
+        "activities": [
+          "1. Take a day trip to Nara and see the Todai-ji Temple, the Kasuga Shrine, and the Nara Park",
+          "2. Feed the friendly deer and enjoy the cherry blossoms"
+        ]
+      },
+      {
+        "day": "Day 5",
+        "activities": [
+          "1. Visit the Fushimi Inari Shrine, the Kiyomizu-dera Temple, and the Arashiyama Bamboo Forest",
+          "2. Wear a kimono and learn about the Japanese tea ceremony"
+        ]
+      },
+      {
+        "day": "Day 6",
+        "activities": [
+          "1. Travel by bullet train to Osaka and check in to your hotel",
+          "2. Visit the Osaka Castle, the Dotonbori Street, and the Umeda Sky Building"
+        ]
+      },
+      {
+        "day": "Day 7",
+        "activities": [
+          "1. Take a day trip to Hiroshima and see the Peace Memorial Park, the Atomic Bomb Dome, and the Miyajima Island",
+          "2. Learn about the history and the hope of the city"
+        ]
+      },
+      {
+        "day": "Day 8",
+        "activities": [
+          "1. Check out from your hotel and depart for your flight home"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Enjoy the Beaches and Islands of Thailand",
+    "destination": "Bangkok, Phuket, and Krabi, Thailand",
+    "duration": 6,
+    "members": {
+      "from": 1,
+      "to": 20
+    },
+    "commodity": {
+      "accommodation": {
+        "star": 3,
+        "text": "Three Star Hotel"
+      },
+      "food": "packed",
+      "transportation": "separate"
+    },
+    "price": 60000,
+    "itinerary": [
+      {
+        "day": "Day 1",
+        "activities": [
+          "1. Arrive in Bangkok and check in to your hotel",
+          "2. Relax at the pool or enjoy the hotel facilities"
+        ]
+      },
+      {
+        "day": "Day 2",
+        "activities": [
+          "1. Visit the Grand Palace, the Wat Pho, and the Wat Arun",
+          "2. Shop at the Chatuchak Weekend Market and the Siam Paragon"
+        ]
+      },
+      {
+        "day": "Day 3",
+        "activities": [
+          "1. Travel by plane to Phuket and check in to your hotel",
+          "2. Visit the Patong Beach and the Bangla Road"
+        ]
+      },
+      {
+        "day": "Day 4",
+        "activities": [
+          "1. Take a boat trip to the Phi Phi Islands and enjoy snorkeling, swimming, and sunbathing",
+          "2. See the Maya Bay, the Monkey Beach, and the Viking Cave"
+        ]
+      },
+      {
+        "day": "Day 5",
+        "activities": [
+          "1. Travel by bus to Krabi and check in to your hotel",
+          "2. Visit the Ao Nang Beach and the Railay Beach"
+        ]
+      },
+      {
+        "day": "Day 6",
+        "activities": [
+          "1. Take a boat trip to the Four Islands and enjoy kayaking, fishing, and rock climbing",
+          "2. See the Koh Poda, the Koh Gai, the Koh Tub, and the Koh Mor"
+        ]
+      },
+      {
+        "day": "Day 7",
+        "activities": [
+          "1. Check out from your hotel and depart for your flight back to Bangkok"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,186 @@
+.booking-cutoff-select {
+  position: relative;
+  color: #212529;
+}
+
+.booking-cutoff-select select {
+  display: none;
+}
+
+.select-selected {
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: var(--bs-form-select-bg-img),
+    var(--bs-form-select-bg-icon, none);
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.booking-cutoff-select:focus {
+  border-color: #86b7fe;
+  border-radius: 0.375rem;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+.select-items div,
+.select-selected {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.select-items {
+  color: rgb(84, 84, 84);
+  font-size: 0.875rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  overflow-y: scroll;
+  background-color: #fff;
+  border: 1px solid rgb(218, 218, 218);
+  border-radius: 0.375rem;
+}
+
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: #0055aa10;
+}
+
+#itineraryPart .card,
+#summaryPart .card
+ {
+  background-color: #0055aa10;
+  border: none;
+}
+
+#itineraryPart .card:hover {
+    background-color: #0055aa13;
+}
+
+#packageTitle {
+  font-weight: bolder;
+  border: 1px solid transparent;
+  box-shadow: none;
+  font-size: 3rem;
+  padding: 0;
+  border-radius: 0;
+  margin-bottom: 0.5rem;
+}
+
+.was-validated #packageTitle:valid, #packageTitle.is-valid {
+  border-bottom-color: #198754;
+}
+
+.was-validated #packageTitle:invalid, #packageTitle.is-invalid {
+  border-bottom-color: #dc3545;
+}
+
+#packageTitle:focus {
+  border-bottom: 1px solid rgba(0, 85, 170);
+}
+
+.accordion-body input {
+  border: 1px solid rgb(220, 220, 220);
+  transition: all ease-in-out 0.1s;
+}
+
+.accordion-body input:hover {
+  background-color: #0055aa03;
+}
+
+.accordion-body input:focus {
+  border: 1px solid rgb(220, 220, 220);
+  box-shadow: 0 0 1px 3px rgba(0, 85, 170, 0.5);
+}
+
+.accordion-body span {
+  top: 0.5rem !important;
+  left: 0.5rem !important;
+  height: fit-content;
+}
+
+.accordion-body .btn-secondary:hover {
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+}
+
+.accordion-body .btn-secondary {
+  background-color: transparent;
+  font-weight: 400;
+  border: none;
+}
+
+.accordion-body .button-container
+ {
+  height: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -1rem;
+}
+
+.accordion-body .icon-container {
+  height: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accordion-body .btn-tertiary {
+  background-color: #0055aa03;
+  border: none;
+  border-radius: 50%;
+  height: 90%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.accordion-body .btn-tertiary:hover {
+  background-color: #c9c6c62b;
+  border-radius: 50%;
+  height: 90%;
+  aspect-ratio: 1;
+}
+
+.accordion-body .btn-tertiary:active {
+  border-radius: 50%;
+  background-color: #c9c6c67d;
+  height: 90%;
+  aspect-ratio: 1;
+}
