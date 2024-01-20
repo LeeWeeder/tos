@@ -4,10 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Packages | Tour Operator System</title>
+  <title>Bookings | Tour Operator System</title>
   <link rel="shortcut icon" href="../../images/favicon/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="../../css/bootstrap.css">
-  <!-- <link rel="stylesheet" href="css/bootstrap-utilities.css"> -->
   <link rel="stylesheet" href="../../css/global.css">
 </head>
 
@@ -52,16 +51,15 @@
         <div class="col-12">
           <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="mt-4">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item active" aria-current="page">Packages</li>
+              <li class="breadcrumb-item active" aria-current="page">Bookings</li>
             </ol>
           </nav>
-          <h4>Packages</h4>
-          <p class="text-secondary">Create and manage packages.</p>
+          <h4>Add bookings</h4>
         </div>
       </div>
       <div class="row">
         <div class="col-12 col-md-auto ms-md-auto">
-          <a name="newPackageButton" id="newPackageButton" class="btn btn-primary w-100 w-md-auto" href="create-package.php" role="button">Create new package</a>
+          <a name="newBookingButton" id="newBookingButton" class="btn btn-primary w-100 w-md-auto" href="add-new-booking.php" role="button">Add new booking</a>
         </div>
       </div>
       <div class="row mt-3">

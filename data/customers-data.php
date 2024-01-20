@@ -1,5 +1,5 @@
 <?php
-$customers = [
+$customersData = [
   [
     'lastName' => 'Smith',
     'middleInitial' => 'A',

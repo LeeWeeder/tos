@@ -1,13 +1,25 @@
 <?php
 include 'data/customers-data.php';
+include 'util.php';
+
 session_start();
 $tourPackagesFileName = 'data/tourPackages.json';
 $tourPackages = file_get_contents($tourPackagesFileName);
 if (!isset($_SESSION['tourPackages'])) {
   $_SESSION['tourPackages'] = json_decode($tourPackages, true);
 }
+
 if (!isset($_SESSION['customers'])) {
-  $_SESSION['customers'] = $customers;
+  $_SESSION['customers'] = $customersData;
+  for ($i = 0; $i < sizeof($_SESSION['customers']); $i++) {
+    if (!isset($_SESSION['customers'][$i]['fullName'])) {
+      $customer = $_SESSION['customers'][$i];
+      $firstName = $customer['firstName'];
+      $middleInitial = $customer['middleInitial'];
+      $lastName = $customer['lastName'];
+      $_SESSION['customers'][$i]['fullName'] = setFullName($firstName, $middleInitial, $lastName);
+    }
+  }
 }
 ?>
 

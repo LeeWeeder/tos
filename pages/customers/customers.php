@@ -61,23 +61,23 @@ session_start();
           <div class="modal-body">
             <p class="text-muted fw-light fst-italic" style="font-size: small !important;">Fields marked with <span class="text-danger">*</span> are required</p>
             <div class="row">
-              <div class="mb-3 col-12 col-sm-8">
-                <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="lastName" required name="lastName">
+              <div class="mb-3 col-12 col-sm-9">
+                <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="firstName" required name="firstName">
                 <div class="invalid-feedback">
-                  Last name can't be empty.
+                  First name can't be empty
                 </div>
               </div>
-              <div class="mb-3 col-12 col-sm-4">
+              <div class="mb-3 col-12 col-sm-3">
                 <label for="middleInitial" class="form-label">M.I</label>
                 <input type="text" class="form-control" id="middleInitial" maxlength="1" name="middleInitial">
               </div>
             </div>
             <div class="mb-3">
-              <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="firstName" required name="firstName">
+              <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="lastName" required name="lastName">
               <div class="invalid-feedback">
-                First name can't be empty
+                Last name can't be empty.
               </div>
             </div>
             <div class="mb-3">
@@ -173,10 +173,10 @@ session_start();
                   $paymentMethodElement = $paymentMethodElement . "<li>" . $paymentMethods[$j] . "</li>";
                 }
                 echo "<tr>
-                <th scope='row'>" . $i ."</th>
-                <td>" . $customer['firstName'] . " " . $customer['lastName'] . "</td>
+                <th scope='row'>" . $i . "</th>
+                <td>" . $customer['fullName'] . "</td>
                 <td>" . $customer['phone'] . "</td>
-                <td>" . $paymentMethodElement ."</td>
+                <td>" . $paymentMethodElement . "</td>
                 <td>Actions</td>
               </tr>";
               }

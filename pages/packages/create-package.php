@@ -140,7 +140,7 @@
                     <label for="price" class="form-label">Package price</label>
                     <div class="input-group has-validation mb-3">
                       <span class="input-group-text">PHP</span>
-                      <input type="number" class="form-control" aria-label="Price amount" id="price" placeholder="0.00">
+                      <input type="number" class="form-control" aria-label="Price amount" id="price" placeholder="0.00" required>
                       <div class="invalid-feedback">
                         Please provide price for your package.
                       </div>
@@ -191,7 +191,7 @@
                         <p class="fw-bold">Food</p>
                         <div class="ms-4">
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" value="dine" id="dine" name="food" checked>
+                            <input class="form-check-input" type="radio" value="dine" id="dine" name="food" required>
                             <label class="form-check-label" for="dine">
                               Dine
                             </label>
@@ -209,7 +209,7 @@
                         <span class="text-muted fw-light">On arrival before the start date of booking and departure after the tour.</span>
                         <div class="ms-4 mt-4">
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" value="free" id="free" name="transportation" checked>
+                            <input class="form-check-input" type="radio" value="free" id="free" name="transportation" required>
                             <label class="form-check-label" for="free">
                               Free <span class="text-muted">(included in the package)</span>
                             </label>
@@ -233,7 +233,7 @@
                 </button>
               </div>
             </div>
-            <div class=" form-part d-none" id="itineraryPart">
+            <div class="form-part d-none" id="itineraryPart">
               <h6 class="fw-lighter mb-4 text-muted">Itinerary</h6>
               <div class="accordion" id="itineraryInputContainer">
               </div>
