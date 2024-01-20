@@ -1,4 +1,5 @@
 <?php
+include 'data/customers-data.php';
 session_start();
 $tourPackagesFileName = 'data/tourPackages.json';
 $tourPackages = file_get_contents($tourPackagesFileName);
@@ -6,12 +7,8 @@ if (!isset($_SESSION['tourPackages'])) {
   $_SESSION['tourPackages'] = json_decode($tourPackages, true);
 }
 if (!isset($_SESSION['customers'])) {
-  $_SESSION['customers'] = array();
-  $_SESSION['customers']['name'] = "Lyniel";
+  $_SESSION['customers'] = $customers;
 }
-$_SESSION['customers'] = array(
-  array('name' => 'lyniel')
-);
 ?>
 
 <!DOCTYPE html>

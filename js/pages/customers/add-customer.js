@@ -12,14 +12,28 @@
       event.preventDefault()
       event.stopPropagation()
     } else {
-      var formData = new FormData(document.querySelector("#form"))
+      var formData = new FormData(document.querySelector("#form"));
+
+      var customer = {}
+
+      formData.forEach((value, key) => {
+        if (!Reflect.has(customer, key)) {
+          customer[key] = value;
+          return;
+        }
+        if (key === 'paymentMethod' && !Array.isArray(customer[key])) {
+          customer[key] = [customer[key]];
+        }
+        customer[key].push(value);
+      });
+
+
       fetch("../../process/add-customer-process.php", {
         method: "POST",
-        body: formData
-      }).then((response) => {
-        response.text()
-      }).then(text => {
-        console.log(text)
+        body: JSON.stringify(customer),
+        headers: {
+          "Content-Type": 'application/json'
+        }
       })
     }
     form.classList.add('was-validated')

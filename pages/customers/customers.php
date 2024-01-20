@@ -63,19 +63,19 @@ session_start();
             <div class="row">
               <div class="mb-3 col-12 col-sm-8">
                 <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="lastName" required name="last-name">
+                <input type="text" class="form-control" id="lastName" required name="lastName">
                 <div class="invalid-feedback">
                   Last name can't be empty.
                 </div>
               </div>
               <div class="mb-3 col-12 col-sm-4">
                 <label for="middleInitial" class="form-label">M.I</label>
-                <input type="text" class="form-control" id="middleInitial" maxlength="1" name="middle-initial">
+                <input type="text" class="form-control" id="middleInitial" maxlength="1" name="middleInitial">
               </div>
             </div>
             <div class="mb-3">
               <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="firstName" required name="first-name">
+              <input type="text" class="form-control" id="firstName" required name="firstName">
               <div class="invalid-feedback">
                 First name can't be empty
               </div>
@@ -94,37 +94,37 @@ session_start();
             <label for="paymentMethod" class="form-label">Payment Method<span class="text-danger">*</span></label>
             <div class="mb-3 px-4">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="creditCard" id="creditCard" name="payment-method">
+                <input class="form-check-input" type="checkbox" value="creditCard" id="creditCard" name="paymentMethod">
                 <label class="form-check-label" for="creditCard">
                   Credit Card
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="debitCard" id="debitCard" name="payment-method">
+                <input class="form-check-input" type="checkbox" value="debitCard" id="debitCard" name="paymentMethod">
                 <label class="form-check-label" for="debitCard">
                   Debit Card
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="bankTransfer" id="bankTransfer" name="payment-method">
+                <input class="form-check-input" type="checkbox" value="bankTransfer" id="bankTransfer" name="paymentMethod">
                 <label class="form-check-label" for="bankTransfer">
                   Bank Transfer
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="eWallet" id="eWallet" name="payment-method">
+                <input class="form-check-input" type="checkbox" value="eWallet" id="eWallet" name="paymentMethod">
                 <label class="form-check-label" for="eWallet">
                   E-Wallet
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="mobilePayment" id="mobilePayment" name="payment-method">
+                <input class="form-check-input" type="checkbox" value="mobilePayment" id="mobilePayment" name="paymentMethod">
                 <label class="form-check-label" for="mobilePayment">
                   Mobile Payment
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="prepaidCard" id="prepaidCard" name="payment-method">
+                <input class="form-check-input" type="checkbox" value="prepaidCard" id="prepaidCard" name="paymentMethod">
                 <label class="form-check-label" for="prepaidCard">
                   Prepaid Card
                 </label>
@@ -133,7 +133,7 @@ session_start();
                 </div>
               </div>
             </div>
-            <button class="btn btn-primary mt-2 mb-4 float-end" type="submit" value="submit">Add customer</button>
+            <button class="btn btn-primary mt-2 mb-4 float-end" type="submit">Add customer</button>
           </div>
         </form>
       </div>
@@ -157,7 +157,7 @@ session_start();
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Contact Number</th>
+                <th scope="col">Phone</th>
                 <th scope="col">Payment Method</th>
                 <th scope="col">Actions</th>
               </tr>
@@ -165,15 +165,18 @@ session_start();
             <tbody class="table-group-divider">
               <?php
               $customers = $_SESSION['customers'];
-              echo $customers[0]['name'];
               for ($i = 0; $i < sizeof($customers); $i++) {
                 $customer = $customers[$i];
-                echo $customer['name'];
+                $paymentMethods = $customer['paymentMethod'];
+                $paymentMethodElement = "";
+                for ($j = 0; $j < count($paymentMethods); $j++) {
+                  $paymentMethodElement = $paymentMethodElement . "<li>" . $paymentMethods[$j] . "</li>";
+                }
                 echo "<tr>
-                <th scope='row'>" . $i . "</th>
-                <td>" . $customer['name'] . " " . $customer['middle-initial'] . " " . $customer['last-name'] . "</td>
-                <td>" . $customer['phone'] > "</td`>
-                <td>Payment Method</td>
+                <th scope='row'>" . $i ."</th>
+                <td>" . $customer['firstName'] . " " . $customer['lastName'] . "</td>
+                <td>" . $customer['phone'] . "</td>
+                <td>" . $paymentMethodElement ."</td>
                 <td>Actions</td>
               </tr>";
               }
