@@ -160,6 +160,8 @@ class Package {
       const label = document.createElement("label")
       label.setAttribute("for", "input" + 1)
 
+      const price = document.querySelector("#price")
+
       const xmlns = "http://www.w3.org/2000/svg"
 
       const mapSVG = document.createElementNS(xmlns, "svg")
@@ -277,7 +279,7 @@ class Package {
 
   summaryBackButton.addEventListener("click", event => {
     itineraries = []
-    document.querySelector("#price").removeAttribute("required")
+    price.removeAttribute("required")
     goToLastPart(summaryPart, itineraryPart)
   })
 
@@ -302,7 +304,6 @@ class Package {
       const success = goToNextPart(itineraryPart, event)
       removeValidation(success)
 
-      const price = document.querySelector("#price")
       price.setAttribute("required", "required")
       price.focus()
     }
@@ -323,7 +324,6 @@ class Package {
           loadPackageSummary()
           goToNextPart(formPart, event)
 
-          const price = document.querySelector("#price")
           price.setAttribute("required", "required")
           price.focus()
         }
@@ -431,6 +431,13 @@ class Package {
   </div>
   <div class="mb-3">
   <h6 class="fw-bold">Accommodation</h6>
+  <p>PHP` + new Intl.NumberFormat('en-PH', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+}).format(price.value) + `</p>
+  </div>
+  <div class="mb-3">
+  <h6 class="fw-bold">Accommodation</h6>
   <p>` + accommodation.text + `</p>
   </div>
   <div class="mb-3">
@@ -455,14 +462,14 @@ class Package {
         document.querySelector("input[name = 'transportation']:checked").value
       )
 
-      var tourPackage = new CustomBooking(
+      var tourPackage = new Package(
         document.querySelector("#packageTitle").value,
         document.querySelector("#destination").value,
         document.querySelector("#duration").value,
         new Members(document.querySelector("#minNumOfMembers").value, document.querySelector("#maxNumOfMembers").value),
         commodity,
         itineraries,
-        document.querySelector("#price").value
+        price.value
       )
 
       var data = JSON.stringify(tourPackage)

@@ -157,7 +157,7 @@ session_start();
         </div>
       </div>
       <div class="row mt-3">
-        <div class="table-responsive card">
+        <div class="table-responsive card mb-5">
           <table class="table table-hover table-striped">
             <thead>
               <tr>

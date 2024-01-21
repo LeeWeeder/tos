@@ -138,20 +138,6 @@
               <div class="mb-3">
                 <div class="row">
                   <div class="col-12">
-                    <label for="price" class="form-label">Package price</label>
-                    <div class="input-group has-validation mb-3">
-                      <span class="input-group-text">PHP</span>
-                      <input type="number" class="form-control" aria-label="Price amount" id="price" placeholder="0.00" required>
-                      <div class="invalid-feedback">
-                        Please provide price for your package.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <div class="row">
-                  <div class="col-12">
                     <div class="card border-primary p-4">
                       <div class="commodities mb-4">
                         <p class="fw-bold">Accommodation</p>
@@ -222,6 +208,21 @@
                             </label>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="price" class="form-label">Package price</label>
+                    <div class="input-group has-validation mb-3">
+                      <span class="input-group-text">PHP</span>
+                      <input type="number" class="form-control" aria-label="Price amount" id="price" placeholder="0.00" required>
+                      <div class="invalid-feedback">
+                        Please provide price for your package.
                       </div>
                     </div>
                   </div>
