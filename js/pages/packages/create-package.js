@@ -455,7 +455,7 @@ class Package {
         document.querySelector("input[name = 'transportation']:checked").value
       )
 
-      var tourPackage = new Package(
+      var tourPackage = new CustomBooking(
         document.querySelector("#packageTitle").value,
         document.querySelector("#destination").value,
         document.querySelector("#duration").value,

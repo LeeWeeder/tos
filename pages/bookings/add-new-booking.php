@@ -143,7 +143,7 @@ session_start();
                   <a class="nav-link" href="../../index.php">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="">Bookings</a>
+                  <a class="nav-link active" aria-current="page" href="bookings.php">Bookings</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../packages/packages.php">Packages</a>
@@ -164,18 +164,20 @@ session_start();
             <div class="col-12">
               <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="mt-4">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">Bookings</li>
+                  <li class="breadcrumb-item"><a href="../../index.php" class="text-decoration-none">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="bookings.php" class="text-decoration-none">Bookings</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Add quick booking</li>
                 </ol>
               </nav>
-              <h4>Bookings</h4>
-              <p class="text-secondary">Keep track of bookings. Create and manage.</p>
+              <h4>Add quick bookings</h4>
+              <p class="text-secondary">Add and manage quick bookings</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="container-sm pt-2 col-12 col-md-8 mx-auto">
-        <div class="fit-content card p-3 border-primary text-primary mt-5 mb-4">
+        <div class="fit-content card p-3 border-primary text-primary mt-3 mb-4">
           <div class="form-check-reverse form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quickBook" checked>
             <label class="form-check-label" for="quickBook">Quick book</label>
@@ -249,7 +251,7 @@ session_start();
             </div>
             <div class="mb-3 mt-4">
               <label for="startDate">Start Date</label>
-              <input type="date" class="form-control" id="startDateQuickBook" required aria-labelledby="startDateHelpBlock">
+              <input type="date" class="form-control" id="startDateQuickBook" required aria-labelledby="startDateHelpBlock" name="startDate">
               <small class="text-muted" id="startDateHelpBlock">
               </small>
               <div class="invalid-feedback">
@@ -259,44 +261,20 @@ session_start();
           </div>
           <!-- Customer Selection -->
           <div class="mb-3">
-            <label for="customer" class="form-label">Customer</label>
+            <label for="customer" class="form-label">Customer
+              <small class="text-muted d-block"> It is necessary to add the details of the customer first to validate transactions.</small></label>
             <input class="form-control" name="customer" id="customer" placeholder="Search customer..." list="customerOptions" aria-labelledby="customerHelpBlock" required />
             <div class="invalid-feedback">
               Please provide the customer.
             </div>
             <datalist id="customerOptions">
-              <?php
-              $customers = $_SESSION['customers'];
-              for ($i = 0; $i < sizeof($customers); $i++) {
-                $customer = $customers[$i];
-                echo "<option value='" . $customer['fullName'] . "'>";
-              }
-              ?>
             </datalist>
             <small id="customerHelpBlock" class="form-text text-muted visually-hidden">This customer is not in our list, please <a type="button" role="button" id="addCustomerModalToggler" class="link-primary not-exit">add it first</a>.</small>
-          </div>
-          <div class="form-part d-none" id="summaryPart">
-            <h6 class="fw-lighter mb-4 text-muted">Summary</h6>
-            <div class="card mb-4 p-3">
-              <div class="card-body">
-                <h4 class="card-title mb-3">Package summary</h4>
-                <div id="cardContent" class="card-text">
-                </div>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between">
-              <button type="button" id="summaryBackButton" class="btn btn-secondary my-5">
-                Back
-              </button>
-              <button type="button" id="summaryFinishButton" class="btn btn-primary my-5">
-                Finish
-              </button>
-            </div>
           </div>
 
           <!-- Submit Button -->
           <button type="submit" class="btn btn-primary mb-5">
-            Submit
+            Add booking
           </button>
         </form>
       </div>

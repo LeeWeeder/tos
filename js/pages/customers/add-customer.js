@@ -68,9 +68,21 @@
 })()
 
 function setFullName(firstName, middleInitial, lastName) {
+  const firstNameTitleCase = titleCase(firstName)
+  const lastNameTitleCase = titleCase(lastName)
   if (middleInitial.length == 0) {
-    return firstName = " " + lastName;
+    return firstNameTitleCase = " " + lastNameTitleCase
   }
 
-  return firstName + " " + middleInitial + ". " + lastName;
+  return firstNameTitleCase + " " + titleCase(middleInitial) + ". " + lastNameTitleCase;
+}
+
+function titleCase(str) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(function (word) {
+      return word[0].toUpperCase() + word.substr(1);
+    })
+    .join(' ');
 }

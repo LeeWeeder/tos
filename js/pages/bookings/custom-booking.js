@@ -1,12 +1,12 @@
 function showCustomerHelpBlock(input, customers, customerHelpBlock) {
   const inputValue = input.value.toLowerCase()
-  var shouldShowButton
+  var isEmpty
   var isInTheList
 
   if (inputValue.length == 0) {
-    shouldShowButton = false
+    isEmpty = false
   } else {
-    shouldShowButton = true
+    isEmpty = true
     for (var i = 0; i < customers.length; i++) {
       fullName = customers[i]['fullName'].toLowerCase()
       if (fullName == inputValue) {
@@ -16,7 +16,7 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
         isInTheList = false
       }
     }
-    if (shouldShowButton && isInTheList) {
+    if (isEmpty && isInTheList) {
       customerHelpBlock.classList.add('visually-hidden')
     } else {
       customerHelpBlock.classList.remove('visually-hidden')
@@ -62,15 +62,28 @@ class Commodity {
   }
 }
 
-class Package {
-  constructor(title, destination, duration, members, commodity, itinerary, price) {
-    this.title = title
+class Duration {
+  constructor(start, end) {
+    this.start = start.value
+    this.end = end.value
+  }
+  getDuration() {
+    var endDate = new Date(this.start)
+    var startDate = new Date(this.end)
+    let diffTime = Math.abs(endDate - startDate)
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  }
+}
+
+class CustomBooking {
+  constructor(destination, duration, members, commodity, itinerary, customer, price) {
     this.destination = destination
     this.duration = duration
     this.members = members
-    this.price = price
+    this.customer = customer
     this.commodity = commodity
     this.itinerary = itinerary
+    this.price = price
   }
 }
 
@@ -90,10 +103,18 @@ class Package {
   })
 
   var customers
-  fetch("../../process/customers.php")
+  const datalist = document.querySelector('#customerOptions')
+  fetch("../../process/customers.php", {
+    method: 'POST'
+  })
     .then(response => response.json())
     .then(data => {
       customers = data
+      var options
+      for (var i = 0; i < customers.length; i++) {
+        options += '<option value="' + customers[i]['fullName'] + '">'
+      }
+      datalist.innerHTML = options
     })
 
   const customerHelpBlock = document.querySelector('#customerHelpBlock')
@@ -132,32 +153,7 @@ class Package {
     addCustomerFirstNameInput.focus()
   })
 
-
-
-
   var quickBook = document.querySelector('#quickBook');
-
-  var addBookingsForm = document.querySelector('#addBookingsForm')
-  addBookingsForm.addEventListener('submit', event => {
-    if (!addBookingsForm.checkValidity()) {
-      event.preventDefault()
-      event.stopPropagation()
-      const customFieldInputs = document.querySelectorAll('input')
-      if (quickBook.checked) {
-        customFieldInputs.forEach(input => {
-          input.removeAttribute('required', 'required')
-        })
-      } else {
-        customFieldInputs.forEach(input => {
-          input.setAttribute('required', 'required')
-        })
-      }
-    } else {
-      console.log("valid")
-    }
-    addBookingsForm.classList.add('was-validated')
-  })
-
 
   var form = document.querySelector('.needs-validation')
   form.addEventListener('submit', function (event) {
@@ -170,6 +166,7 @@ class Package {
       event.preventDefault()
       event.stopPropagation()
     } else {
+      event.preventDefault()
       var formData = new FormData(document.querySelector("#form"));
 
       var customer = {}
@@ -192,8 +189,6 @@ class Package {
         }
       });
       customer['fullName'] = setFullName(customer['firstName'], customer['middleInitial'], customer['lastName'])
-      console.log(customer);
-
 
       fetch("../../process/add-customer-process.php", {
         method: "POST",
@@ -201,9 +196,47 @@ class Package {
         headers: {
           "Content-Type": 'application/json'
         }
+      }).then(() => {
+        fetch("../../process/customers.php", {
+          method: 'POST'
+        })
+          .then(response => response.json())
+          .then(data => {
+            customers = data
+            var options
+            for (var i = 0; i < customers.length; i++) {
+              options += '<option value="' + customers[i]['fullName'] + '">'
+            }
+            datalist.innerHTML = options
+            const middleInitial = document.querySelector('#middleInitial')
+            const lastName = document.querySelector('#lastName')
+            const name = setFullName(addCustomerFirstNameInput.value, middleInitial.value, lastName.value)
+            customerInput.value = name
+            customerInput.dispatchEvent(new Event('input'))
+            addCustomerModal.hide()
+            form.reset()
+            form.classList.remove('was-validated')
+          })
       })
     }
     form.classList.add('was-validated')
+  })
+
+  function setCustomerValidity(input) {
+    var isValid = false
+    let customersMap = customers.map(value => value['fullName'].toLowerCase())
+    const inputValue = input.value.toLowerCase()
+    if (customersMap.includes(inputValue)) {
+      isValid = true
+      input.setCustomValidity('')
+    } else {
+      input.setCustomValidity('Not in the list.')
+    }
+    return isValid
+  }
+
+  customerInput.addEventListener('input', () => {
+    setCustomerValidity(customerInput)
   })
 
   function setValidity(checkboxes, event) {
@@ -264,6 +297,11 @@ class Package {
     if (!addBookingsForm.checkValidity()) {
       event.preventDefault()
       event.stopPropagation()
+    }
+    if (!setCustomerValidity(customerInput)) {
+      event.preventDefault()
+      event.stopPropagation()
+      showModal(addCustomerFirstNameInput, customerInput, addCustomerModal)
     } else {
       var nextPart
       switch (currentPart) {
@@ -436,14 +474,13 @@ class Package {
     }
   }
 
+  var duration
+
   basicDetailsNextButton.addEventListener("click", event => {
     const success = goToNextPart(basicDetailsPart, event)
     removeValidation(success)
     if (success) {
-      var endDate = new Date(endDateInput.value)
-      var startDate = new Date(startDateInput.value)
-      let diffTime = Math.abs(endDate - startDate)
-      let duration = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+      duration = new Duration(startDateInput, endDateInput).getDuration()
       loadItineraryPart(duration)
     }
   }, true)
@@ -501,17 +538,14 @@ class Package {
           }
           loadPackageSummary()
           goToNextPart(formPart, event)
-
-          const price = document.querySelector("#price")
-          price.setAttribute("required", "required")
-          price.focus()
         }
         return
       }
       const success = goToNextPart(formPart, event)
       removeValidation(success)
       if (success) {
-        loadItineraryPart(document.getElementById("duration").value)
+        duration = new Duration(startDateInput, endDateInput).getDuration()
+        loadItineraryPart(duration)
       }
     }
   })
@@ -557,7 +591,6 @@ class Package {
 
   function loadPackageSummary() {
     const destination = document.querySelector("#destination")
-    const duration = document.querySelector("#duration")
     const members = document.querySelector('#members')
     const accommodation = new Accommodation(document.querySelector("input[name = 'accommodation']:checked").value)
     const food = document.querySelector("input[name = 'food']:checked")
@@ -596,54 +629,50 @@ class Package {
   }
 
   summaryFinishButton.addEventListener("click", event => {
-    if (!form.checkValidity()) {
-      event.preventDefault()
-      event.stopPropagation()
-    } else {
-      event.preventDefault()
-      var commodity = new Commodity(
-        new Accommodation(document.querySelector("input[name = 'accommodation']:checked").value),
-        document.querySelector("input[name = 'food']:checked").value,
-        document.querySelector("input[name = 'transportation']:checked").value
-      )
+    var commodity = new Commodity(
+      new Accommodation(document.querySelector("input[name = 'accommodation']:checked").value),
+      document.querySelector("input[name = 'food']:checked").value,
+      document.querySelector("input[name = 'transportation']:checked").value
+    )
 
-      var tourPackage = new Package(
-        document.querySelector("#packageTitle").value,
-        document.querySelector("#destination").value,
-        document.querySelector("#duration").value,
-        new Members(document.querySelector("#minNumOfMembers").value, document.querySelector("#maxNumOfMembers").value),
-        commodity,
-        itineraries,
-        document.querySelector("#price").value
-      )
+    var customBooking = new CustomBooking(document.querySelector("#destination").value, new Duration(startDateInput, endDateInput), document.querySelector('#members').value, commodity, itineraries, document.querySelector('#customer').value, '100000')
 
-      var data = JSON.stringify(tourPackage)
-      console.log(data)
+    var data = JSON.stringify(customBooking)
+    console.log(data)
 
-      fetch("../../process/create-package-process.php", {
-        method: "POST",
-        body: data,
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        }
+    fetch("../../process/add-custom-booking-process.php", {
+      method: "POST",
+      body: data,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    })
+      .then(() => {
+        window.location.replace("bookings.php?active=" + 'custom')
       })
-        .then(() => {
-          window.location.replace("../../pages/packages/packages.php")
-        })
-
-    }
-
 
     form.classList.add("was-validated")
   }, true)
 })()
 
 function setFullName(firstName, middleInitial, lastName) {
+  const firstNameTitleCase = titleCase(firstName)
+  const lastNameTitleCase = titleCase(lastName)
   if (middleInitial.length == 0) {
-    return firstName = " " + lastName;
+    return firstNameTitleCase = " " + lastNameTitleCase
   }
 
-  return firstName + " " + middleInitial + ". " + lastName;
+  return firstNameTitleCase + " " + titleCase(middleInitial) + ". " + lastNameTitleCase;
+}
+
+function titleCase(str) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(function (word) {
+      return word[0].toUpperCase() + word.substr(1);
+    })
+    .join(' ');
 }
 
 function showModal(inputTo, inputFrom, modal) {

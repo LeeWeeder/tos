@@ -143,7 +143,7 @@ session_start();
                   <a class="nav-link" href="../../index.php">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="">Bookings</a>
+                  <a class="nav-link active" aria-current="page" href="bookings.php">Bookings</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../packages/packages.php">Packages</a>
@@ -164,18 +164,20 @@ session_start();
             <div class="col-12">
               <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="mt-4">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item active" aria-current="page">Bookings</li>
+                  <li class="breadcrumb-item"><a href="../../index.php" class="text-decoration-none">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="bookings.php" class="text-decoration-none">Bookings</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Add custom booking</li>
                 </ol>
               </nav>
-              <h4>Bookings</h4>
-              <p class="text-secondary">Keep track of bookings. Create and manage.</p>
+              <h4>Add custom bookings</h4>
+              <p class="text-secondary">Add custom tour bookings</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="container-sm pt-2 col-12 col-md-8 mx-auto">
-        <div class="fit-content card p-3 mt-5 mb-4">
+        <div class="fit-content card p-3 mt-3 mb-4">
           <div class="form-check-reverse form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quickBook">
             <label class="form-check-label" for="quickBook">Quick book</label>
@@ -210,7 +212,7 @@ session_start();
             </div>
             <div class="mb-3">
               <label for="members" class="form-label">Members</label>
-              <input type="number" class="form-control" name="members" id="members" aria-describedby="membersHelpBlock" max="20" min="1" required/>
+              <input type="number" class="form-control" name="members" id="members" aria-describedby="membersHelpBlock" max="20" min="1" required />
               <div class="invalid-feedback">
                 Please provide the number of members that can avail the tour or check if the value you entered is correct.
               </div>
@@ -311,10 +313,10 @@ session_start();
                     </div>
                   </div>
                   <div class="d-flex justify-content-end">
-                      <button type="button" id="basicDetailsNextButton" class="btn btn-primary my-4">
-                        Next
-                      </button>
-                    </div>
+                    <button type="button" id="basicDetailsNextButton" class="btn btn-primary my-4">
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -340,6 +342,7 @@ session_start();
                 <h4 class="card-title mb-3">Package summary</h4>
                 <div id="cardContent" class="card-text">
                 </div>
+                <p class="fw-bold fs-5">PHP 100,000.00</p>
               </div>
             </div>
             <div class="d-flex justify-content-between">

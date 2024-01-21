@@ -21,6 +21,16 @@ if (!isset($_SESSION['customers'])) {
     }
   }
 }
+
+if (!isset($_SESSION['bookings'])) {
+  if (!isset($_SESSION['bookings']['quickBookings'])) {
+    $_SESSION['bookings']['quickBookings'] = array();
+  }
+  if (!isset($_SESSION['bookings']['customBookings'])) {
+    $_SESSION['bookings']['customBookings'] = array();
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -75,19 +85,83 @@ if (!isset($_SESSION['customers'])) {
   </header>
   <main>
     <div class="container">
-      <h4 class="mt-4">Dashboard</h4>
-      <div class="row mt-4">
-        <div class="card col-12 col-md-3">
-          Test
+      <div class="card border-primary mt-4">
+        <div class="card-header">
+          <h5>Bookings</h5>
         </div>
-        <div class="card col-12 col-md-3">
-          Test
+        <div class="container-fluid">
+          <div class="card-body row">
+            <div class="col-12 col-md-6">
+              <div class="card text-bg-primary m-2">
+                <div class="card-title ps-3 pt-3">
+                  Quick bookings
+                </div>
+                <div class="card-text p-3 h-100">
+                  Manage and create quick bookings from ready-made packages.
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                  <span class="badge text-bg-info"><?php
+                  echo sizeof($_SESSION['bookings']['quickBookings']);
+                  ?> booking/s</span>
+                  <a class="btn btn-secondary" href="pages/bookings/bookings.php">Go</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card border-primary m-2">
+                <div class="card-title ps-3 pt-3">
+                  Custom bookings
+                </div>
+                <div class="card-text p-3 h-100">
+                  Plan your own itinerary. Fully customize your tour. Manage custom bookings.
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                  <span class="badge text-bg-info"><?php
+                  echo sizeof($_SESSION['bookings']['customBookings']);
+                  ?> booking/s</span>
+                  <a class="btn btn-primary" href="pages/bookings/bookings.php?active='custom'">Go</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card col-12 col-md-3">
-          Test
-        </div>
-        <div class="card col-12 col-md-3">
-          Test
+      </div>
+      <div class="card mt-4">
+        <div class="container-fluid">
+          <div class="card-body row">
+            <div class="col-12 col-md-6">
+              <div class="card border-primary m-2">
+                <div class="card-title ps-3 pt-3">
+                  Packages
+                </div>
+                <div class="card-text p-3">
+                  Manage and create tour packages for quick bookings of customers.
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                  <span class="badge text-bg-info"><?php
+                  echo sizeof($_SESSION['tourPackages']);
+                  ?> package/s</span>
+                  <a class="btn btn-secondary" href="pages/packages/packages.php">Go</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="card border-primary m-2">
+                <div class="card-title ps-3 pt-3">
+                  Customers
+                </div>
+                <div class="card-text p-3">
+                  Manage your customers and add new customers that avail tours.
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                  <span class="badge text-bg-info"><?php
+                  echo sizeof($_SESSION['customers']);
+                  ?> customer/s</span>
+                  <a class="btn btn-secondary" href="pages/customers/customers.php">Go</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

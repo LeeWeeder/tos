@@ -1,12 +1,12 @@
 function showCustomerHelpBlock(input, customers, customerHelpBlock) {
   const inputValue = input.value.toLowerCase()
-  var shouldShowButton
+  var isEmpty
   var isInTheList
 
   if (inputValue.length == 0) {
-    shouldShowButton = false
+    isEmpty = false
   } else {
-    shouldShowButton = true
+    isEmpty = true
     for (var i = 0; i < customers.length; i++) {
       fullName = customers[i]['fullName'].toLowerCase()
       if (fullName == inputValue) {
@@ -16,7 +16,7 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
         isInTheList = false
       }
     }
-    if (shouldShowButton && isInTheList) {
+    if (isEmpty && isInTheList) {
       customerHelpBlock.classList.add('visually-hidden')
     } else {
       customerHelpBlock.classList.remove('visually-hidden')
@@ -39,14 +39,24 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
   })
 
   var customers
-  fetch("../../process/customers.php")
+  const datalist = document.querySelector('#customerOptions')
+  fetch("../../process/customers.php", {
+    method: 'POST'
+  })
     .then(response => response.json())
     .then(data => {
       customers = data
+      var options
+      for (var i = 0; i < customers.length; i++) {
+        options += '<option value="' + customers[i]['fullName'] + '">'
+      }
+      datalist.innerHTML = options
     })
 
   var packages
-  fetch("../../process/packages.php")
+  fetch("../../process/packages.php", {
+    method: 'POST'
+  })
     .then(response => response.json())
     .then(data => {
       packages = data
@@ -91,10 +101,38 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
   var quickBook = document.querySelector('#quickBook');
 
   var addBookingsForm = document.querySelector('#addBookingsForm')
+
   addBookingsForm.addEventListener('submit', event => {
     if (!addBookingsForm.checkValidity()) {
       event.preventDefault()
       event.stopPropagation()
+    }
+
+    if (!setCustomerValidity(customerInput)) {
+      event.preventDefault()
+      event.stopPropagation()
+      showModal(addCustomerFirstNameInput, customerInput, addCustomerModal)
+    } else {
+      event.preventDefault()
+      event.stopPropagation()
+
+      var formData = new FormData(addBookingsForm)
+
+      var quickBooking = {}
+
+      for (const [key, value] of formData) {
+        quickBooking[key] = value
+      }
+
+      fetch("../../process/add-quick-booking-process.php", {
+        method: "POST",
+        body: JSON.stringify(quickBooking),
+        headers: {
+          "Content-Type": 'application/json'
+        }
+      }).then(() => {
+        window.location.replace('bookings.php')
+      })
     }
     addBookingsForm.classList.add('was-validated')
   })
@@ -111,6 +149,7 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
       event.preventDefault()
       event.stopPropagation()
     } else {
+      event.preventDefault()
       var formData = new FormData(document.querySelector("#form"));
 
       var customer = {}
@@ -133,8 +172,6 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
         }
       });
       customer['fullName'] = setFullName(customer['firstName'], customer['middleInitial'], customer['lastName'])
-      console.log(customer);
-
 
       fetch("../../process/add-customer-process.php", {
         method: "POST",
@@ -143,8 +180,47 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
           "Content-Type": 'application/json'
         }
       })
+        .then(() => {
+          fetch("../../process/customers.php", {
+            method: 'POST'
+          })
+            .then(response => response.json())
+            .then(data => {
+              customers = data
+              var options
+              for (var i = 0; i < customers.length; i++) {
+                options += '<option value="' + customers[i]['fullName'] + '">'
+              }
+              datalist.innerHTML = options
+              const middleInitial = document.querySelector('#middleInitial')
+              const lastName = document.querySelector('#lastName')
+              const name = setFullName(addCustomerFirstNameInput.value, middleInitial.value, lastName.value)
+              customerInput.value = name
+              customerInput.dispatchEvent(new Event('input'))
+              addCustomerModal.hide()
+              form.reset()
+              form.classList.remove('was-validated')
+            })
+        })
     }
     form.classList.add('was-validated')
+  })
+
+  function setCustomerValidity(input) {
+    var isValid = false
+    let customersMap = customers.map(value => value['fullName'].toLowerCase())
+    const inputValue = input.value.toLowerCase()
+    if (customersMap.includes(inputValue)) {
+      isValid = true
+      input.setCustomValidity('')
+    } else {
+      input.setCustomValidity('Not in the list.')
+    }
+    return isValid
+  }
+
+  customerInput.addEventListener('input', () => {
+    setCustomerValidity(customerInput)
   })
 
   function setValidity(checkboxes, event) {
@@ -207,11 +283,23 @@ function showCustomerHelpBlock(input, customers, customerHelpBlock) {
 })()
 
 function setFullName(firstName, middleInitial, lastName) {
+  const firstNameTitleCase = titleCase(firstName)
+  const lastNameTitleCase = titleCase(lastName)
   if (middleInitial.length == 0) {
-    return firstName = " " + lastName;
+    return firstNameTitleCase = " " + lastNameTitleCase
   }
 
-  return firstName + " " + middleInitial + ". " + lastName;
+  return firstNameTitleCase + " " + titleCase(middleInitial) + ". " + lastNameTitleCase;
+}
+
+function titleCase(str) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(function (word) {
+      return word[0].toUpperCase() + word.substr(1);
+    })
+    .join(' ');
 }
 
 function showModal(inputTo, inputFrom, modal) {
