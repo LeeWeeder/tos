@@ -1,3 +1,51 @@
+#packageContainer {
+  display: flex;
+  overflow: auto;
+  flex-direction: row;
+}
+
+.wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.btn-check:checked + .card.btn,
+:not(.btn-check) + .card.btn:active,
+.card.btn:first-child:active,
+.card.btn.active,
+.card.btn.show {
+  color: #0055aa;
+  background-color: #fff;
+  border-color: #0055aa;
+  box-shadow: 0 0 0 2px #0055aa;
+}
+
+.btn-check:checked + .card.btn .card-footer .card,
+.btn-check:hover + .card.btn .card-footer .card {
+  background-color: #fff;
+  border-color: #0055aa;
+  transition: all 0.15s ease-in-out;
+}
+
+#packageContainer .package-card {
+  width: 15rem;
+}
+
+.place {
+  font-size: 0.8rem;
+}
+
+.card li {
+  list-style: none;
+  font-size: 0.75rem;
+  margin-left: -2rem;
+  margin-bottom: 0.3rem;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
 #itineraryPart .card,
 #summaryPart .card
  {
@@ -7,28 +55,6 @@
 
 #itineraryPart .card:hover {
     background-color: #0055aa13;
-}
-
-#packageTitle {
-  font-weight: bolder;
-  border: 1px solid transparent;
-  box-shadow: none;
-  font-size: 3rem;
-  padding: 0;
-  border-radius: 0;
-  margin-bottom: 0.5rem;
-}
-
-.was-validated #packageTitle:valid, #packageTitle.is-valid {
-  border-bottom-color: #198754;
-}
-
-.was-validated #packageTitle:invalid, #packageTitle.is-invalid {
-  border-bottom-color: #dc3545;
-}
-
-#packageTitle:focus {
-  border-bottom: 1px solid rgba(0, 85, 170);
 }
 
 .accordion-body input {

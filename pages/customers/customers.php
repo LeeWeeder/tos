@@ -12,7 +12,7 @@ session_start();
   <title>Customers | Tour Operator System</title>
   <link rel="shortcut icon" href="../../images/favicon/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="../../css/bootstrap.css">
-  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="../../css/customers/customers.css">
 </head>
 
 <body id="override">
@@ -61,23 +61,23 @@ session_start();
           <div class="modal-body">
             <p class="text-muted fw-light fst-italic" style="font-size: small !important;">Fields marked with <span class="text-danger">*</span> are required</p>
             <div class="row">
-              <div class="mb-3 col-12 col-sm-8">
-                <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="lastName" required name="lastName">
+              <div class="mb-3 col-12 col-sm-9">
+                <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="firstName" required name="firstName">
                 <div class="invalid-feedback">
-                  Last name can't be empty.
+                  First name can't be empty
                 </div>
               </div>
-              <div class="mb-3 col-12 col-sm-4">
+              <div class="mb-3 col-12 col-sm-3">
                 <label for="middleInitial" class="form-label">M.I</label>
                 <input type="text" class="form-control" id="middleInitial" maxlength="1" name="middleInitial">
               </div>
             </div>
             <div class="mb-3">
-              <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="firstName" required name="firstName">
+              <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="lastName" required name="lastName">
               <div class="invalid-feedback">
-                First name can't be empty
+                Last name can't be empty.
               </div>
             </div>
             <div class="mb-3">
@@ -141,6 +141,12 @@ session_start();
     <div class="container">
       <div class="row">
         <div class="col-12">
+          <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="mt-4">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="../../index.php" class="text-decoration-none">Dashboard</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Customers</li>
+            </ol>
+          </nav>
           <h4 class="mt-4">Customers</h4>
           <p class="text-secondary">Manage customers.</p>
         </div>
@@ -165,18 +171,25 @@ session_start();
             <tbody class="table-group-divider">
               <?php
               $customers = $_SESSION['customers'];
+              function format_camel_case($str)
+              {
+                $str = preg_replace('/([a-z])([A-Z])/', '$1 $2', $str);
+                $str = ucwords($str);
+                return $str;
+              }
+
               for ($i = 0; $i < sizeof($customers); $i++) {
                 $customer = $customers[$i];
                 $paymentMethods = $customer['paymentMethod'];
                 $paymentMethodElement = "";
                 for ($j = 0; $j < count($paymentMethods); $j++) {
-                  $paymentMethodElement = $paymentMethodElement . "<li>" . $paymentMethods[$j] . "</li>";
+                  $paymentMethodElement = $paymentMethodElement . "<li>" . format_camel_case($paymentMethods[$j]) . "</li>";
                 }
                 echo "<tr>
-                <th scope='row'>" . $i ."</th>
-                <td>" . $customer['firstName'] . " " . $customer['lastName'] . "</td>
+                <th scope='row'>" . $i . "</th>
+                <td>" . $customer['fullName'] . "</td>
                 <td>" . $customer['phone'] . "</td>
-                <td>" . $paymentMethodElement ."</td>
+                <td><ul>" . $paymentMethodElement . "</ul></td>
                 <td>Actions</td>
               </tr>";
               }

@@ -70,6 +70,7 @@
           <div class="col-12">
             <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="mt-4">
               <ol class="breadcrumb align-items-center">
+                <li class="breadcrumb-item"><a href="../../index.php" class="text-decoration-none">Dashboard</a></li>
                 <li class="breadcrumb-item"><a href="packages.php" class="text-decoration-none">Packages</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Create package</li>
               </ol>
@@ -140,7 +141,7 @@
                     <label for="price" class="form-label">Package price</label>
                     <div class="input-group has-validation mb-3">
                       <span class="input-group-text">PHP</span>
-                      <input type="number" class="form-control" aria-label="Price amount" id="price" placeholder="0.00">
+                      <input type="number" class="form-control" aria-label="Price amount" id="price" placeholder="0.00" required>
                       <div class="invalid-feedback">
                         Please provide price for your package.
                       </div>
@@ -191,7 +192,7 @@
                         <p class="fw-bold">Food</p>
                         <div class="ms-4">
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" value="dine" id="dine" name="food" checked>
+                            <input class="form-check-input" type="radio" value="dine" id="dine" name="food" required>
                             <label class="form-check-label" for="dine">
                               Dine
                             </label>
@@ -209,7 +210,7 @@
                         <span class="text-muted fw-light">On arrival before the start date of booking and departure after the tour.</span>
                         <div class="ms-4 mt-4">
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" value="free" id="free" name="transportation" checked>
+                            <input class="form-check-input" type="radio" value="free" id="free" name="transportation" required>
                             <label class="form-check-label" for="free">
                               Free <span class="text-muted">(included in the package)</span>
                             </label>
@@ -233,7 +234,7 @@
                 </button>
               </div>
             </div>
-            <div class=" form-part d-none" id="itineraryPart">
+            <div class="form-part d-none" id="itineraryPart">
               <h6 class="fw-lighter mb-4 text-muted">Itinerary</h6>
               <div class="accordion" id="itineraryInputContainer">
               </div>

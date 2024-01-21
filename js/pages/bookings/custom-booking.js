@@ -1,7 +1,26 @@
-class Members {
-  constructor(from, to) {
-    this.from = from
-    this.to = to
+function showCustomerHelpBlock(input, customers, customerHelpBlock) {
+  const inputValue = input.value.toLowerCase()
+  var isEmpty
+  var isInTheList
+
+  if (inputValue.length == 0) {
+    isEmpty = false
+  } else {
+    isEmpty = true
+    for (var i = 0; i < customers.length; i++) {
+      fullName = customers[i]['fullName'].toLowerCase()
+      if (fullName == inputValue) {
+        isInTheList = true
+        break
+      } else {
+        isInTheList = false
+      }
+    }
+    if (isEmpty && isInTheList) {
+      customerHelpBlock.classList.add('visually-hidden')
+    } else {
+      customerHelpBlock.classList.remove('visually-hidden')
+    }
   }
 }
 
@@ -43,30 +62,223 @@ class Commodity {
   }
 }
 
-class Package {
-  constructor(title, destination, duration, members, commodity, itinerary, price) {
-    this.title = title
-    this.destination = destination
-    this.duration = duration
-    this.members = members
-    this.price = price
-    this.commodity = commodity
-    this.itinerary = itinerary
+class Duration {
+  constructor(start, end) {
+    this.start = start.value
+    this.end = end.value
+  }
+  getDuration() {
+    var endDate = new Date(this.start)
+    var startDate = new Date(this.end)
+    let diffTime = Math.abs(endDate - startDate)
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
   }
 }
 
-(() => {
-  'use strict'
-  const form = document.querySelector('.needs-validation')
+class CustomBooking {
+  constructor(destination, duration, members, commodity, itinerary, customer, price) {
+    this.destination = destination
+    this.duration = duration
+    this.members = members
+    this.customer = customer
+    this.commodity = commodity
+    this.itinerary = itinerary
+    this.price = price
+  }
+}
 
-  form.addEventListener("submit", event => {
-    if (!form.checkVisibility()) {
+
+(() => {
+  const aTags = document.querySelectorAll("a:not(.not-exit)")
+  const modal = new bootstrap.Modal("#confirmLeavingModal")
+  const confirmLink = document.getElementById("confirmLink")
+
+  Array.from(aTags).forEach(a => {
+    a.addEventListener("click", event => {
+      event.preventDefault()
+      const link = a.getAttribute("href")
+      confirmLink.setAttribute("href", link)
+      modal.show()
+    })
+  })
+
+  var customers
+  const datalist = document.querySelector('#customerOptions')
+  fetch("../../process/customers.php", {
+    method: 'POST'
+  })
+    .then(response => response.json())
+    .then(data => {
+      customers = data
+      var options
+      for (var i = 0; i < customers.length; i++) {
+        options += '<option value="' + customers[i]['fullName'] + '">'
+      }
+      datalist.innerHTML = options
+    })
+
+  const customerHelpBlock = document.querySelector('#customerHelpBlock')
+
+  const customerInput = document.querySelector('#customer')
+  customerInput.addEventListener('input', () => {
+    showCustomerHelpBlock(customerInput, customers, customerHelpBlock)
+  })
+
+  const addCustomerModal = new bootstrap.Modal("#addCustomerModal")
+  const addCustomerModalToggle = document.querySelector('#addCustomerModalToggler')
+  const addCustomerFirstNameInput = document.querySelector('#form #firstName')
+
+  addCustomerModalToggle.addEventListener("click", () => {
+    showModal(addCustomerFirstNameInput, customerInput, addCustomerModal)
+  })
+
+  customerInput.addEventListener('keydown', event => {
+    if (event.key == 'Enter') {
+      if (customerInput.value.length == 0) {
+        return
+      }
+
+      for (var i = 0; i < customers.length; i++) {
+        if (customers[i]['fullName'].toLowerCase() == customerInput.value.toLowerCase()) {
+          return
+        }
+      }
+
+      event.preventDefault()
+      showModal(addCustomerFirstNameInput, customerInput, addCustomerModal)
+    }
+  })
+
+  document.querySelector('#addCustomerModal').addEventListener('shown.bs.modal', () => {
+    addCustomerFirstNameInput.focus()
+  })
+
+  var quickBook = document.querySelector('#quickBook');
+
+  var form = document.querySelector('.needs-validation')
+  form.addEventListener('submit', function (event) {
+    const checkboxes = document.querySelectorAll("#addCustomerModal input[type = 'checkbox']")
+    if (!form.checkValidity()) {
       event.preventDefault()
       event.stopPropagation()
     }
+    if (!setValidity(checkboxes, event)) {
+      event.preventDefault()
+      event.stopPropagation()
+    } else {
+      event.preventDefault()
+      var formData = new FormData(document.querySelector("#form"));
 
-    form.classList.add("was-validated")
-  }, true)
+      var customer = {}
+
+      formData.forEach((value, key) => {
+        if (key === 'paymentMethod') {
+          if (!Reflect.has(customer, key)) {
+            customer[key] = [value];
+          } else {
+            customer[key].push(value);
+          }
+        } else {
+          if (!Reflect.has(customer, key)) {
+            customer[key] = value;
+          } else if (Array.isArray(customer[key])) {
+            customer[key].push(value);
+          } else {
+            customer[key] = [customer[key], value];
+          }
+        }
+      });
+      customer['fullName'] = setFullName(customer['firstName'], customer['middleInitial'], customer['lastName'])
+
+      fetch("../../process/add-customer-process.php", {
+        method: "POST",
+        body: JSON.stringify(customer),
+        headers: {
+          "Content-Type": 'application/json'
+        }
+      }).then(() => {
+        fetch("../../process/customers.php", {
+          method: 'POST'
+        })
+          .then(response => response.json())
+          .then(data => {
+            customers = data
+            var options
+            for (var i = 0; i < customers.length; i++) {
+              options += '<option value="' + customers[i]['fullName'] + '">'
+            }
+            datalist.innerHTML = options
+            const middleInitial = document.querySelector('#middleInitial')
+            const lastName = document.querySelector('#lastName')
+            const name = setFullName(addCustomerFirstNameInput.value, middleInitial.value, lastName.value)
+            customerInput.value = name
+            customerInput.dispatchEvent(new Event('input'))
+            addCustomerModal.hide()
+            form.reset()
+            form.classList.remove('was-validated')
+          })
+      })
+    }
+    form.classList.add('was-validated')
+  })
+
+  function setCustomerValidity(input) {
+    var isValid = false
+    let customersMap = customers.map(value => value['fullName'].toLowerCase())
+    const inputValue = input.value.toLowerCase()
+    if (customersMap.includes(inputValue)) {
+      isValid = true
+      input.setCustomValidity('')
+    } else {
+      input.setCustomValidity('Not in the list.')
+    }
+    return isValid
+  }
+
+  customerInput.addEventListener('input', () => {
+    setCustomerValidity(customerInput)
+  })
+
+  function setValidity(checkboxes, event) {
+    var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked)
+    if (!checkedOne) {
+      event.preventDefault()
+      checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener("change", event => {
+          setValidity(checkboxes, event)
+        })
+        checkbox.setCustomValidity("No payment method selected")
+      });
+    } else {
+      checkboxes.forEach(function (checkbox) {
+        checkbox.setCustomValidity("")
+      });
+    }
+    return checkedOne
+  }
+
+  quickBook.addEventListener('change', function () {
+    window.location.replace('add-new-booking.php')
+  });
+
+  const startDateInput = document.querySelector('#customStartDate')
+  const endDateInput = document.querySelector('#customEndDate')
+
+  var today = new Date()
+  today.setDate(today.getDate() + 2)
+  today = today.toISOString().split('T')[0];
+  startDateInput.min = today
+  startDateInput.addEventListener('input', () => {
+    var nextDay = new Date(startDateInput.value)
+    try {
+      nextDay.setDate(nextDay.getDate() + 1)
+      endDateInput.min = nextDay.toISOString().split('T')[0];
+      endDateInput.removeAttribute('disabled')
+    } catch (e) {
+      endDateInput.setAttribute('disabled', 'disabled')
+    }
+
+  })
 
   const summaryFinishButton = document.getElementById("summaryFinishButton")
   const summaryBackButton = document.getElementById("summaryBackButton")
@@ -82,9 +294,14 @@ class Package {
   }
 
   function goToNextPart(currentPart, event) {
-    if (!form.checkValidity()) {
+    if (!addBookingsForm.checkValidity()) {
       event.preventDefault()
       event.stopPropagation()
+    }
+    if (!setCustomerValidity(customerInput)) {
+      event.preventDefault()
+      event.stopPropagation()
+      showModal(addCustomerFirstNameInput, customerInput, addCustomerModal)
     } else {
       var nextPart
       switch (currentPart) {
@@ -101,7 +318,7 @@ class Package {
       return true
     }
 
-    form.classList.add('was-validated')
+    addBookingsForm.classList.add('was-validated')
     return false
   }
 
@@ -111,7 +328,7 @@ class Package {
 
   function removeValidation(success) {
     if (success) {
-      form.classList.remove('was-validated')
+      addBookingsForm.classList.remove('was-validated')
     }
   }
 
@@ -257,11 +474,14 @@ class Package {
     }
   }
 
+  var duration
+
   basicDetailsNextButton.addEventListener("click", event => {
     const success = goToNextPart(basicDetailsPart, event)
     removeValidation(success)
     if (success) {
-      loadItineraryPart(document.getElementById("duration").value)
+      duration = new Duration(startDateInput, endDateInput).getDuration()
+      loadItineraryPart(duration)
     }
   }, true)
 
@@ -301,10 +521,6 @@ class Package {
       loadPackageSummary()
       const success = goToNextPart(itineraryPart, event)
       removeValidation(success)
-
-      const price = document.querySelector("#price")
-      price.setAttribute("required", "required")
-      price.focus()
     }
   })
 
@@ -322,17 +538,14 @@ class Package {
           }
           loadPackageSummary()
           goToNextPart(formPart, event)
-
-          const price = document.querySelector("#price")
-          price.setAttribute("required", "required")
-          price.focus()
         }
         return
       }
       const success = goToNextPart(formPart, event)
       removeValidation(success)
       if (success) {
-        loadItineraryPart(document.getElementById("duration").value)
+        duration = new Duration(startDateInput, endDateInput).getDuration()
+        loadItineraryPart(duration)
       }
     }
   })
@@ -376,112 +589,93 @@ class Package {
     inputSource.value = ""
   }
 
-  const aTags = document.querySelectorAll("a:not(#confirmLink)")
-  const modal = new bootstrap.Modal("#confirmLeavingModal")
-  const confirmLink = document.getElementById("confirmLink")
-
-  Array.from(aTags).forEach(a => {
-    a.addEventListener("click", event => {
-      event.preventDefault()
-      const link = a.getAttribute("href")
-      confirmLink.setAttribute("href", link)
-      modal.show()
-    })
-  })
-
-  const min = basicDetailsPart.querySelector(".members #minNumOfMembers")
-  const max = basicDetailsPart.querySelector(".members #maxNumOfMembers")
-  min.addEventListener("input", () => {
-    if (max.value != "") {
-      min.setAttribute("max", max.value)
-    }
-  })
-
-  max.addEventListener("input", () => {
-    if (min.value != "") {
-      max.setAttribute("min", min.value)
-    }
-  })
-
   function loadPackageSummary() {
-    const title = document.querySelector("#packageTitle")
     const destination = document.querySelector("#destination")
-    const duration = document.querySelector("#duration")
-    const members = new Members(document.querySelector("#minNumOfMembers").value, document.querySelector("#maxNumOfMembers").value)
+    const members = document.querySelector('#members')
     const accommodation = new Accommodation(document.querySelector("input[name = 'accommodation']:checked").value)
     const food = document.querySelector("input[name = 'food']:checked")
     const transportation = document.querySelector("input[name = 'transportation']:checked")
     const cardContent = document.querySelector("#cardContent")
+    let options = { month: 'long', day: 'numeric', year: 'numeric' };
+    var startDate = new Date(startDateInput.value)
+    var endDate = new Date(endDateInput.value)
+    startDate = startDate.toLocaleDateString("en-US", options)
+    endDate = endDate.toLocaleDateString("en-US", options)
     cardContent.innerHTML = `
-  <div class="mb-3">
-    <h6 class="fw-bold">Title</h6>
-    <p>` + title.value + `</p>
-  </div>
-  <div class="mb-3">
-  <h6 class="fw-bold">Destination</h6>
-  <p>` + destination.value + `</p>
-  </div>
-  <div class="mb-3">
-  <h6 class="fw-bold">Duration</h6>
-  <p>` + duration.value + ` day/s</p>
-  </div>
-  <div class="mb-3">
-  <h6 class="fw-bold">Members</h6>
-  <p>` + members.from + ' to ' + members.to + ` members</p>
-  </div>
-  <div class="mb-3">
-  <h6 class="fw-bold">Accommodation</h6>
-  <p>` + accommodation.text + `</p>
-  </div>
-  <div class="mb-3">
-  <h6 class="fw-bold">Food</h6>
-  <p class="text-capitalize">` + food.value + `</p>
-  </div>
-  <div class="mb-3">
-  <h6 class="fw-bold">Transportation</h6>
-  <p class="text-capitalize">` + transportation.value + `</p>
-    `
+    <div class="mb-3">
+    <h6 class="fw-bold">Destination</h6>
+    <p>` + destination.value + `</p>
+    </div>
+    <div class="mb-3">
+    <h6 class="fw-bold">Duration</h6>
+    <p>` + startDate + " to " + endDate + `</p>
+    </div>
+    <div class="mb-3">
+    <h6 class="fw-bold">Members</h6>
+    <p>` + members.value + ` members</p>
+    </div>
+    <div class="mb-3">
+    <h6 class="fw-bold">Accommodation</h6>
+    <p>` + accommodation.text + `</p>
+    </div>
+    <div class="mb-3">
+    <h6 class="fw-bold">Food</h6>
+    <p class="text-capitalize">` + food.value + `</p>
+    </div>
+    <div class="mb-3">
+    <h6 class="fw-bold">Transportation</h6>
+    <p class="text-capitalize">` + transportation.value + `</p>
+      `
   }
 
   summaryFinishButton.addEventListener("click", event => {
-    if (!form.checkValidity()) {
-      event.preventDefault()
-      event.stopPropagation()
-    } else {
-      event.preventDefault()
-      var commodity = new Commodity(
-        new Accommodation(document.querySelector("input[name = 'accommodation']:checked").value),
-        document.querySelector("input[name = 'food']:checked").value,
-        document.querySelector("input[name = 'transportation']:checked").value
-      )
+    var commodity = new Commodity(
+      new Accommodation(document.querySelector("input[name = 'accommodation']:checked").value),
+      document.querySelector("input[name = 'food']:checked").value,
+      document.querySelector("input[name = 'transportation']:checked").value
+    )
 
-      var tourPackage = new CustomBooking(
-        document.querySelector("#packageTitle").value,
-        document.querySelector("#destination").value,
-        document.querySelector("#duration").value,
-        new Members(document.querySelector("#minNumOfMembers").value, document.querySelector("#maxNumOfMembers").value),
-        commodity,
-        itineraries,
-        document.querySelector("#price").value
-      )
+    var customBooking = new CustomBooking(document.querySelector("#destination").value, new Duration(startDateInput, endDateInput), document.querySelector('#members').value, commodity, itineraries, document.querySelector('#customer').value, '100000')
 
-      var data = JSON.stringify(tourPackage)
-      console.log(data)
+    var data = JSON.stringify(customBooking)
+    console.log(data)
 
-      fetch("../../process/create-package-process.php", {
-        method: "POST",
-        body: data,
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        }
+    fetch("../../process/add-custom-booking-process.php", {
+      method: "POST",
+      body: data,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    })
+      .then(() => {
+        window.location.replace("bookings.php?active=" + 'custom')
       })
-        .then(() => {
-          window.location.replace("../../pages/packages/packages.php")
-        })
-
-    }
-
 
     form.classList.add("was-validated")
   }, true)
 })()
+
+function setFullName(firstName, middleInitial, lastName) {
+  const firstNameTitleCase = titleCase(firstName)
+  const lastNameTitleCase = titleCase(lastName)
+  if (middleInitial.length == 0) {
+    return firstNameTitleCase = " " + lastNameTitleCase
+  }
+
+  return firstNameTitleCase + " " + titleCase(middleInitial) + ". " + lastNameTitleCase;
+}
+
+function titleCase(str) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(function (word) {
+      return word[0].toUpperCase() + word.substr(1);
+    })
+    .join(' ');
+}
+
+function showModal(inputTo, inputFrom, modal) {
+  inputTo.value = inputFrom.value
+  modal.show()
+}

@@ -17,15 +17,24 @@
       var customer = {}
 
       formData.forEach((value, key) => {
-        if (!Reflect.has(customer, key)) {
-          customer[key] = value;
-          return;
+        if (key === 'paymentMethod') {
+          if (!Reflect.has(customer, key)) {
+            customer[key] = [value];
+          } else {
+            customer[key].push(value);
+          }
+        } else {
+          if (!Reflect.has(customer, key)) {
+            customer[key] = value;
+          } else if (Array.isArray(customer[key])) {
+            customer[key].push(value);
+          } else {
+            customer[key] = [customer[key], value];
+          }
         }
-        if (key === 'paymentMethod' && !Array.isArray(customer[key])) {
-          customer[key] = [customer[key]];
-        }
-        customer[key].push(value);
       });
+      customer['fullName'] = setFullName(customer['firstName'], customer['middleInitial'], customer['lastName'])
+      console.log(customer);
 
 
       fetch("../../process/add-customer-process.php", {
@@ -57,3 +66,23 @@
     return checkedOne
   }
 })()
+
+function setFullName(firstName, middleInitial, lastName) {
+  const firstNameTitleCase = titleCase(firstName)
+  const lastNameTitleCase = titleCase(lastName)
+  if (middleInitial.length == 0) {
+    return firstNameTitleCase = " " + lastNameTitleCase
+  }
+
+  return firstNameTitleCase + " " + titleCase(middleInitial) + ". " + lastNameTitleCase;
+}
+
+function titleCase(str) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(function (word) {
+      return word[0].toUpperCase() + word.substr(1);
+    })
+    .join(' ');
+}
